@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Plaza | El Hub Digital de La Canal</title>
+    <link rel="icon" type="image/png" href="LAPLAZA1.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+        
+        :root {
+            --primary: #fca311; 
+            --accent-red: #ff4d4d; 
+            --bg-dark: #0b192c;
+            --glass: rgba(11, 25, 44, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --white: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Scroll Suave a nivel de sistema */
+        html { scroll-behavior: smooth; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { font-family: 'Montserrat', sans-serif; color: var(--white); line-height: 1.6; overflow: hidden; height: 100vh; background-color: var(--bg-dark); }
+
+        /* --- BOTÓN VOLVER ARRIBA --- */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--glass);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: 800;
+            cursor: pointer;
+            z-index: 2000;
+            display: none; /* Se activa por JS */
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+        #backToTop:hover {
+            background: var(--accent-red);
+            border-color: var(--accent-red);
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* --- ESTRUCTURA --- */
+        .main-wrapper { display: flex; height: 100vh; width: 100vw; }
+
+        .hero-view { 
+            flex: 1; position: relative; 
+            background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=2000&auto=format&fit=crop') center/cover;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .hero-view::before { content: ''; position: absolute; inset: 0; background: rgba(11,25,44,0.4); z-index: 1; }
+
+        .nav-wrapper {
+            position: absolute; top: 30px; left: 0; width: 100%; padding: 0 5%; 
+            display: flex; justify-content: center; z-index: 100;
+        }
+        nav.desktop-nav { 
+            display: flex; width: 100%; max-width: 950px; justify-content: space-evenly; 
+            padding: 18px 10px; background: var(--glass); backdrop-filter: blur(25px);
+            border-radius: 60px; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+        nav.desktop-nav a { 
+            color: var(--white); text-decoration: none; font-weight: 800; font-size: 14px; 
+            letter-spacing: 1.5px; text-transform: uppercase; padding: 12px 20px;
+            border-radius: 40px; transition: var(--transition);
+        }
+        nav.desktop-nav a:hover { background: var(--accent-red); transform: translateY(-3px); }
+
+        .logo-container { position: relative; z-index: 10; width: 85%; animation: float 6s ease-in-out infinite; }
+        .logo-container img { width: auto; max-width: 100%; max-height: 50vh; filter: brightness(1.1) drop-shadow(0 25px 60px rgba(0,0,0,0.8)); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+        .weather-widget {
+            position: absolute; bottom: 40px; left: 40px; z-index: 100;
+            background: var(--glass); backdrop-filter: blur(20px); border-radius: 25px;
+            padding: 20px 25px; border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex; align-items: center; gap: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* --- DERECHA: SIDEBAR --- */
+        .content-sidebar { 
+            flex: 1; background-color: var(--bg-dark); 
+            overflow-y: auto; border-left: 1px solid rgba(255,255,255,0.1);
+            scrollbar-width: thin; scrollbar-color: var(--primary) transparent;
+        }
+        .sidebar-inner { padding: 40px 50px 80px; }
+
+        .section-header { margin-bottom: 35px; }
+        .section-header h2 { font-size: 28px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 3px; }
+        .divider { width: 80px; height: 5px; background: var(--accent-red); margin: 12px 0; border-radius: 2px; }
+
+        /* CARDS */
+        .big-card {
+            background: var(--card-bg); border-radius: 20px; padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px;
+        }
+        .big-card h4 { font-size: 20px; color: var(--primary); margin-bottom: 10px; }
+
+        .emergency-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .emergency-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 20px; background: rgba(255, 77, 77, 0.1); border: 2px solid var(--accent-red);
+            border-radius: 15px; color: var(--white); text-decoration: none; font-weight: 800; font-size: 14px;
+        }
+
+        .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .mini-card { background: rgba(255,255,255,0.03); padding: 18px; border-radius: 15px; border-left: 4px solid var(--primary); }
+
+        .tour-box-full { width: 100%; height: 550px; background: #000; border-bottom: 4px solid var(--primary); }
+        .tour-box-full iframe { width: 100%; height: 100%; border: none; }
+
+        /* CONTACTO Y FOOTER */
+        .contact-section { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .form-container { width: 100%; max-width: 600px; margin-top: 30px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 18px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; color: white; font-family: inherit;
+        }
+        .submit-btn { width: 100%; padding: 20px; background: var(--primary); color: var(--bg-dark); border: none; border-radius: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+
+        footer { background: rgba(0,0,0,0.5); padding: 60px 40px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); }
+        .footer-contacts h3 { color: var(--primary); font-size: 32px; margin-bottom: 10px; }
+
+        @media (max-width: 1100px) {
+            .main-wrapper { flex-direction: column; height: auto; overflow: auto; }
+            .hero-view { height: 60vh; }
+            .content-sidebar { width: 100%; border-left: none; overflow: visible; }
+            .weather-widget { display: none; }
+            .dir-grid { grid-template-columns: 1fr; }
+            #backToTop { bottom: 20px; right: 20px; width: 45px; height: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button id="backToTop" title="Volver arriba">↑</button>
+
+    <div class="main-wrapper" id="inicio">
+        
+        <section class="hero-view">
+            <div class="nav-wrapper">
+                <nav class="desktop-nav">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#urgencias">Servicios</a>
+                    <a href="#explora">Mapa 360</a>
+                    <a href="#comunidad">Comunidad</a>
+                    <a href="#contacto">Contacto</a>
+                </nav>
+            </div>
+
+            <div class="logo-container">
+                <img src="LAPLAZA1.png" alt="Logo La Plaza">
+            </div>
+
+            <div class="weather-widget">
+                <div style="font-size: 35px;">🌤️</div>
+                <div>
+                    <span style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.6);">Navarrés</span>
+                    <span style="font-size: 32px; font-weight: 800; color: var(--primary); display: block;">22°C</span>
+                </div>
+            </div>
+        </section>
+
+        <aside class="content-sidebar">
+            
+            <div id="urgencias" class="section-header" style="margin-top: 60px; padding: 0 50px;">
+                <h2 style="color: var(--accent-red);">Urgencias y Salud</h2>
+                <div class="divider" style="background: white;"></div>
+            </div>
+            
+            <div class="sidebar-inner" style="padding-top: 0;">
+                <div class="emergency-grid">
+                    <a href="tel:112" class="emergency-btn">🆘 112 Emergencias</a>
+                    <a href="tel:962266000" class="emergency-btn">🏥 Centro Salud</a>
+                    <a href="tel:062" class="emergency-btn">🚓 G. Civil</a>
+                    <a href="tel:962266001" class="emergency-btn">👮 P. Local</a>
+                </div>
+
+                <div class="big-card" style="border-left: 5px solid var(--primary);">
+                    <h4>Farmacia de Guardia</h4>
+                    <p><b>Farmacia Hnos. Pérez</b> - Navarrés | C/ Mayor, 24</p>
+                    <p><span style="color: #4cc9f0; font-weight: 800;">📍 ABIERTA AHORA</span></p>
+                </div>
+            </div>
+
+            <div id="explora" class="section-header" style="padding: 0 50px;">
+                <h2>Inmersión 360°</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="tour-box-full">
+                <iframe src="https://ver.visitamultimedia.com/canal/" allowfullscreen loading="lazy"></iframe>
+            </div>
+
+            <div id="comunidad" class="sidebar-inner">
+                <div class="section-header" style="padding: 0;">
+                    <h2>La Plaza Viva</h2>
+                    <div class="divider"></div>
+                </div>
+
+                <div class="big-card" style="border-left: 5px solid var(--accent-red); background: rgba(255, 77, 77, 0.05);">
+                    <h4 style="color: var(--accent-red);">BANDOS MUNICIPALES</h4>
+                    <p><b>Navarrés:</b> Corte de suministro de agua mañana de 08:30 a 13:00 en zona centro.</p>
+                </div>
+
+                <div class="big-card" style="background: linear-gradient(135deg, rgba(252, 163, 17, 0.1), transparent);">
+                    <h4>Ágora: Democracia Participativa</h4>
+                    <p>Encuesta: ¿Qué proyecto prefieres para la remodelación del paseo?</p>
+                    <button style="margin-top:15px; padding:12px 25px; background:var(--primary); border:none; border-radius:10px; font-weight:800; cursor:pointer;">VOTAR PROYECTO</button>
+                </div>
+
+                <h4 style="margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px;">Guía de la Comarca</h4>
+                <div class="dir-grid">
+                    <div class="mini-card"><b>Restaurante Villaplana</b><small>Navarrés | Cocina Tradicional</small></div>
+                    <div class="mini-card"><b>Hotel L'Albufera</b><small>Anna | Entorno Natural</small></div>
+                </div>
+
+                <h4 style="margin: 30px 0 20px; text-transform: uppercase; letter-spacing: 2px;">Tablón de Anuncios</h4>
+                <div class="big-card" style="border: 2px dashed rgba(255,255,255,0.2);">
+                    <p><b>Se vende Olivar:</b> 10 hanegadas en plena producción, zona Quesa.</p>
+                    <p style="color: var(--primary); font-weight: 800; margin-top: 10px;">Contacto: 600 000 000</p>
+                </div>
+
+                <div id="contacto" class="contact-section" style="margin-top: 60px;">
+                    <div class="section-header" style="padding: 0;">
+                        <h2>Publicar o Contactar</h2>
+                        <div class="divider"></div>
+                    </div>
+                    
+                    <div class="form-container">
+                        <form action="#">
+                            <div class="form-group"><input type="text" placeholder="Tu Nombre" required></div>
+                            <div class="form-group"><input type="email" placeholder="Correo electrónico" required></div>
+                            <div class="form-group"><textarea rows="5" placeholder="¿Quieres publicar un anuncio, bando o propuesta?"></textarea></div>
+                            <button type="submit" class="submit-btn">Enviar a La Plaza</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="footer-contacts">
+                    <h3>603 67 47 51</h3>
+                    <p>lacanalonline@gmail.com</p>
+                </div>
+                <div style="opacity:0.4; font-size:12px; margin-top:30px;">© 2026 La Plaza - El Hub Digital de La Canal de Navarrés</div>
+            </footer>
+
+        </aside>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Efecto de agua
+            $('.hero-view').ripples({ resolution: 512, dropRadius: 20, perturbance: 0.04 });
+            
+            const $sidebar = $('.content-sidebar');
+            const $btn = $('#backToTop');
+
+            // Mostrar/Ocultar botón según el scroll (Funciona en PC y Móvil)
+            const handleScroll = () => {
+                let scrollTop = $(window).width() > 1100 ? $sidebar.scrollTop() : $(window).scrollTop();
+                if (scrollTop > 400) {
+                    $btn.css('display', 'flex').fadeIn();
+                } else {
+                    $btn.fadeOut();
+                }
+            };
+
+            $sidebar.on('scroll', handleScroll);
+            $(window).on('scroll', handleScroll);
+
+            // Acción del botón Volver Arriba
+            $btn.on('click', function() {
+                if ($(window).width() > 1100) {
+                    $sidebar.animate({ scrollTop: 0 }, 800);
+                } else {
+                    $('html, body').animate({ scrollTop: 0 }, 800);
+                }
+            });
+
+            // Scroll suave para los enlaces del menú
+            $('nav a').on('click', function(e) {
+                if (this.hash !== "") {
+                    e.preventDefault();
+                    var hash = this.hash;
+                    
+                    if ($(window).width() > 1100) {
+                        var scrollPos = $(hash).offset().top + $sidebar.scrollTop();
+                        $sidebar.animate({ scrollTop: scrollPos - 80 }, 800);
+                    } else {
+                        $('html, body').animate({ scrollTop: $(hash).offset().top - 80 }, 800);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
