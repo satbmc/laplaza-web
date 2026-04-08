@@ -6,310 +6,114 @@
     <title>La Plaza - La Canal de Navarrés</title>
     <style>
         /* ========================================= */
-        /* 1. ESTILOS GENERALES Y TIPOGRAFÍA         */
+        /* ESTILOS BASE Y NAVEGACIÓN                 */
         /* ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
         
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #0b192c;
-            color: white;
-            height: 100vh;
-            overflow: hidden; /* Evita el scroll global en PC */
-        }
+        body, html { margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; background-color: #0b192c; color: white; height: 100vh; overflow: hidden; }
+
+        nav { position: absolute; top: 0; width: 100%; padding: 20px 0; display: flex; justify-content: center; gap: 40px; z-index: 10; background: linear-gradient(to bottom, rgba(11,25,44,0.9), transparent); }
+        nav a { color: white; text-decoration: none; font-weight: 700; font-size: 14px; letter-spacing: 1px; transition: color 0.3s; }
+        nav a:hover { color: #fca311; }
+
+        .container { display: flex; height: 100vh; }
 
         /* ========================================= */
-        /* 2. MENÚ DE NAVEGACIÓN                     */
+        /* SECCIÓN IZQUIERDA (HERO & LOGO)           */
         /* ========================================= */
-        nav {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            padding: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            z-index: 10;
-            background: linear-gradient(to bottom, rgba(11,25,44,0.9), transparent);
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 1px;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: #fca311;
-        }
+        .hero-section { flex: 2; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; }
+        .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle, rgba(11,25,44,0.4) 0%, #0b192c 100%); pointer-events: none; }
+        .logo-container { position: relative; z-index: 2; text-align: center; animation: float 4s ease-in-out infinite; }
+        .logo-container img { width: 350px; border-radius: 50%; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* ========================================= */
-        /* 3. ESTRUCTURA PRINCIPAL (PANTALLA DIVIDIDA)*/
+        /* SECCIÓN DERECHA (SCROLLING CONTENT)       */
         /* ========================================= */
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* SECCIÓN IZQUIERDA (Paisaje y Logo) */
-        .hero-section {
-            flex: 2;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle, rgba(11,25,44,0.4) 0%, #0b192c 100%);
-            pointer-events: none; /* Para que el ratón interactúe con el agua de fondo */
-        }
-
-        .logo-container {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .logo-container img {
-            width: 350px;
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* SECCIÓN DERECHA (Barra lateral con scroll) */
-        .sidebar {
-            flex: 1;
-            background-color: #0b192c;
-            padding: 100px 40px 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-            border-left: 1px solid rgba(255,255,255,0.1);
-            z-index: 2;
-            overflow-y: auto; /* Permite scroll vertical */
-            scrollbar-width: none; /* Oculta la barra en Firefox */
-        }
-
-        .sidebar::-webkit-scrollbar {
-            display: none; /* Oculta la barra en Chrome/Safari */
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-        }
+        .sidebar { flex: 1; background-color: #0b192c; padding: 100px 40px 40px; display: flex; flex-direction: column; gap: 60px; border-left: 1px solid rgba(255,255,255,0.1); z-index: 2; overflow-y: auto; scrollbar-width: none; scroll-behavior: smooth; }
+        .sidebar::-webkit-scrollbar { display: none; }
+        .section-title { text-align: center; font-size: 18px; font-weight: 800; letter-spacing: 2px; margin-bottom: 25px; color: #fca311; text-transform: uppercase; }
 
         /* ========================================= */
-        /* 4. MAPA INTERACTIVO                       */
+        /* MAPA INTERACTIVO                          */
         /* ========================================= */
-        .map-container {
-            position: relative;
-            background: #1a2a40;
-            border-radius: 15px;
-            height: 250px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .map-image-placeholder {
-            width: 90%;
-            height: 90%;
-            background-color: rgba(255, 255, 255, 0.05); 
-            border-radius: 10px;
-        }
-
-        .pin {
-            position: absolute;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .pin-dot {
-            width: 14px;
-            height: 14px;
-            background-color: #fca311;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #fca311;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(252, 163, 17, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(252, 163, 17, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(252, 163, 17, 0); }
-        }
-
-        .tooltip {
-            position: absolute;
-            bottom: 180%;
-            left: 50%;
-            transform: translateX(-50%) translateY(15px);
-            background-color: #ffffff;
-            color: #0b192c;
-            padding: 8px;
-            border-radius: 10px;
-            width: 140px;
-            text-align: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            pointer-events: none;
-        }
-
-        .tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -8px;
-            border-width: 8px;
-            border-style: solid;
-            border-color: #ffffff transparent transparent transparent;
-        }
-
+        .map-container { position: relative; background: #1a2a40; border-radius: 15px; height: 250px; width: 100%; display: flex; justify-content: center; align-items: center; border: 1px solid rgba(255,255,255,0.1); background-image: url('https://www.transparenttextures.com/patterns/cubes.png'); }
+        .pin { position: absolute; cursor: pointer; z-index: 10; }
+        .pin-dot { width: 14px; height: 14px; background-color: #fca311; border-radius: 50%; box-shadow: 0 0 10px #fca311; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(252, 163, 17, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(252, 163, 17, 0); } 100% { box-shadow: 0 0 0 0 rgba(252, 163, 17, 0); } }
+        .tooltip { position: absolute; bottom: 180%; left: 50%; transform: translateX(-50%) translateY(15px); background-color: #ffffff; color: #0b192c; padding: 8px; border-radius: 10px; width: 140px; text-align: center; opacity: 0; visibility: hidden; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 10px 25px rgba(0,0,0,0.5); pointer-events: none; }
+        .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -8px; border-width: 8px; border-style: solid; border-color: #ffffff transparent transparent transparent; }
         .tooltip img { width: 100%; height: 70px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; }
-        .tooltip h4 { margin: 0; font-size: 15px; font-weight: 800; color: #0b192c; }
+        .tooltip h4 { margin: 0; font-size: 15px; font-weight: 800; }
         .tooltip p { margin: 2px 0 0 0; font-size: 11px; font-weight: 700; color: #fca311; }
         .pin:hover .tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
         /* ========================================= */
-        /* 5. TARJETAS DE RUTAS (HEXÁGONOS 3D)       */
+        /* RUTAS (HEXÁGONOS 3D)                      */
         /* ========================================= */
-        .cards-grid {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .card {
-            background-color: #1a2a40;
-            width: 140px;
-            height: 160px;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 25px;
-            font-size: 13px;
-            font-weight: 800;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.4s ease, filter 0.3s;
-            will-change: transform;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 60%;
-            background: linear-gradient(to top, rgba(11,25,44,0.9), transparent);
-            z-index: 1;
-        }
-
+        .cards-grid { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .card { background-color: #1a2a40; width: 140px; height: 160px; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; font-size: 13px; font-weight: 800; text-align: center; cursor: pointer; transition: transform 0.4s ease, filter 0.3s; will-change: transform; background-size: cover; background-position: center; position: relative; }
+        .card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60%; background: linear-gradient(to top, rgba(11,25,44,0.9), transparent); z-index: 1; }
         .card span { position: relative; z-index: 2; padding: 0 10px; }
         .card:hover { transform: translateY(-10px) scale(1.05); filter: brightness(1.2); }
 
         /* ========================================= */
-        /* 6. CARRUSEL DE NOTICIAS                   */
+        /* NOTICIAS (CARRUSEL)                       */
         /* ========================================= */
-        .news-carousel {
-            display: flex;
-            gap: 15px;
-            overflow-x: auto;
-            padding-bottom: 15px;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: thin;
-            scrollbar-color: #fca311 #1a2a40;
-        }
-
+        .news-carousel { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: #fca311 #1a2a40; }
         .news-carousel::-webkit-scrollbar { height: 6px; }
         .news-carousel::-webkit-scrollbar-track { background: #1a2a40; border-radius: 10px; }
         .news-carousel::-webkit-scrollbar-thumb { background: #fca311; border-radius: 10px; }
-
-        .news-card {
-            min-width: 220px;
-            background: rgba(26, 42, 64, 0.6);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            scroll-snap-align: start;
-            flex-shrink: 0;
-            overflow: hidden;
-            transition: transform 0.3s, background 0.3s;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-        }
-
+        .news-card { min-width: 220px; background: rgba(26, 42, 64, 0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; scroll-snap-align: start; flex-shrink: 0; overflow: hidden; transition: transform 0.3s; cursor: pointer; backdrop-filter: blur(5px); }
         .news-card:hover { transform: translateY(-5px); background: rgba(26, 42, 64, 0.9); border-color: #fca311; }
         .news-card img { width: 100%; height: 110px; object-fit: cover; }
         .news-content { padding: 15px; }
-        .news-content .date { font-size: 10px; color: #fca311; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        .news-content .date { font-size: 10px; color: #fca311; text-transform: uppercase; font-weight: 800; }
         .news-content h4 { margin: 5px 0; font-size: 15px; color: white; font-weight: 800; }
-        .news-content p { margin: 0; font-size: 12px; color: #b0b8c4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        .news-content p { margin: 0; font-size: 12px; color: #b0b8c4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
         /* ========================================= */
-        /* 7. PIE DE PÁGINA (FOOTER)                 */
+        /* COMUNIDAD (GALERÍA)                       */
         /* ========================================= */
-        .footer {
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .gallery-item { border-radius: 10px; overflow: hidden; height: 120px; position: relative; cursor: pointer; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .gallery-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(252, 163, 17, 0.7); display: flex; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; font-weight: bold; font-size: 24px; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
 
+        /* ========================================= */
+        /* CONTACTO (FORMULARIO)                     */
+        /* ========================================= */
+        .contact-form { background: rgba(26, 42, 64, 0.6); padding: 20px; border-radius: 15px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 15px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 12px; border: none; border-radius: 8px; background: rgba(11, 25, 44, 0.8); color: white; font-family: 'Montserrat', sans-serif; font-size: 13px; box-sizing: border-box; }
+        .contact-form input:focus, .contact-form textarea:focus { outline: 1px solid #fca311; }
+        .contact-form textarea { resize: vertical; min-height: 100px; }
+        .contact-form button { background: #fca311; color: #0b192c; font-weight: 800; padding: 12px; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; text-transform: uppercase; }
+        .contact-form button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(252, 163, 17, 0.4); }
+
+        /* ========================================= */
+        /* FOOTER                                    */
+        /* ========================================= */
+        .footer { margin-top: 20px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
         .footer-column { flex: 1; min-width: 120px; }
         .footer-column.text-right { text-align: right; }
         .footer-column.center-logo { text-align: center; display: flex; flex-direction: column; align-items: center; }
-        .footer h4 { font-size: 11px; color: #fca311; margin: 0 0 10px 0; letter-spacing: 1px; font-weight: 800; }
+        .footer h4 { font-size: 11px; color: #fca311; margin: 0 0 10px 0; font-weight: 800; }
         .footer a, .footer p { display: block; color: #b0b8c4; text-decoration: none; font-size: 12px; margin: 0 0 6px 0; transition: color 0.3s; }
         .footer a:hover { color: white; transform: translateX(3px); }
-        .mini-logo { width: 45px; border-radius: 50%; margin-bottom: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: transform 0.3s; }
+        .mini-logo { width: 45px; border-radius: 50%; margin-bottom: 8px; transition: transform 0.3s; }
         .mini-logo:hover { transform: rotate(15deg) scale(1.1); }
 
         /* ========================================= */
-        /* 8. DISEÑO RESPONSIVE (MÓVILES Y TABLETS)  */
+        /* RESPONSIVE (MÓVILES)                      */
         /* ========================================= */
         @media (max-width: 850px) {
             body, html { height: auto; overflow: visible; overflow-x: hidden; }
             .container { flex-direction: column; height: auto; }
             nav { flex-wrap: wrap; gap: 15px; padding: 15px 10px; background: rgba(11,25,44,0.95); position: fixed; }
-            nav a { font-size: 12px; }
             .hero-section { min-height: 70vh; padding-top: 80px; }
-            .logo-container img { width: 220px; }
             .sidebar { padding: 40px 20px; border-left: none; border-top: 1px solid rgba(255,255,255,0.1); overflow-y: visible; }
-            .cards-grid { flex-wrap: wrap; }
-            .card { width: 130px; height: 150px; }
             .footer { flex-direction: column; text-align: center; gap: 30px; }
             .footer-column.text-right { text-align: center; }
         }
@@ -318,11 +122,11 @@
 <body>
 
     <nav>
-        <a href="#">PUEBLOS</a>
-        <a href="#">RUTAS</a>
-        <a href="#">NOTICIAS</a>
-        <a href="#">COMUNIDAD</a>
-        <a href="#">CONTACTO</a>
+        <a href="#pueblos">PUEBLOS</a>
+        <a href="#rutas">RUTAS</a>
+        <a href="#noticias">NOTICIAS</a>
+        <a href="#comunidad">COMUNIDAD</a>
+        <a href="#contacto">CONTACTO</a>
     </nav>
 
     <div class="container">
@@ -336,11 +140,9 @@
 
         <div class="sidebar">
             
-            <div>
-                <div class="section-title">DESCUBRE LA CANAL</div>
+            <div id="pueblos">
+                <div class="section-title">Descubre La Canal</div>
                 <div class="map-container">
-                    <div class="map-image-placeholder"></div>
-                    
                     <div class="pin" style="top: 70%; left: 60%;">
                         <div class="pin-dot"></div>
                         <div class="tooltip">
@@ -349,7 +151,6 @@
                             <p>El Palacio del Agua</p>
                         </div>
                     </div>
-
                     <div class="pin" style="top: 45%; left: 35%;">
                         <div class="pin-dot"></div>
                         <div class="tooltip">
@@ -358,20 +159,19 @@
                             <p>Los Charcos</p>
                         </div>
                     </div>
-
-                    <div class="pin" style="top: 25%; left: 20%;">
+                    <div class="pin" style="top: 20%; left: 80%;">
                         <div class="pin-dot"></div>
                         <div class="tooltip">
-                            <img src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Bicorp">
-                            <h4>Bicorp</h4>
-                            <p>Reserva Nacional</p>
+                            <img src="https://images.unsplash.com/photo-1598135753163-6167c1a1ad65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Chella">
+                            <h4>Chella</h4>
+                            <p>El Salto</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <div class="section-title">RUTAS & EXPERIENCIAS</div>
+            <div id="rutas">
+                <div class="section-title">Rutas & Experiencias</div>
                 <div class="cards-grid">
                     <div class="card" style="background-image: url('https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');">
                         <span>Charcos de Quesa</span>
@@ -379,11 +179,14 @@
                     <div class="card" style="background-image: url('https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');">
                         <span>Barranquismo Bicorp</span>
                     </div>
+                    <div class="card" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');">
+                        <span>Ruta del Agua</span>
+                    </div>
                 </div>
             </div>
 
-            <div>
-                <div class="section-title">ÚLTIMAS NOTICIAS</div>
+            <div id="noticias">
+                <div class="section-title">Últimas Noticias</div>
                 <div class="news-carousel">
                     <div class="news-card">
                         <img src="https://images.unsplash.com/photo-1533174000282-530c1e549117?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fiestas">
@@ -401,33 +204,56 @@
                             <p>Se ha inaugurado el nuevo tramo de madera para facilitar la ruta de las cascadas.</p>
                         </div>
                     </div>
-                    <div class="news-card">
-                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Deporte">
-                        <div class="news-content">
-                            <span class="date">DEPORTES</span>
-                            <h4>Trail Macizo del Caroig</h4>
-                            <p>Abiertas las inscripciones para la carrera de montaña más dura de la comarca.</p>
-                        </div>
+                </div>
+            </div>
+
+            <div id="comunidad">
+                <div class="section-title">Comunidad</div>
+                <p style="text-align: center; font-size: 13px; color: #b0b8c4; margin-top: -15px; margin-bottom: 20px;">Etiquétanos en Instagram con #LaPlazaCanal</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1516483638261-f40af5bea098?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 1">
+                        <div class="gallery-overlay">❤️</div>
                     </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 2">
+                        <div class="gallery-overlay">❤️</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 3">
+                        <div class="gallery-overlay">❤️</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 4">
+                        <div class="gallery-overlay">❤️</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contacto">
+                <div class="section-title">Hablemos</div>
+                <div class="contact-form">
+                    <input type="text" placeholder="Tu Nombre" required>
+                    <input type="email" placeholder="Tu Correo Electrónico" required>
+                    <textarea placeholder="¿En qué podemos ayudarte?" required></textarea>
+                    <button type="submit">Enviar Mensaje</button>
                 </div>
             </div>
 
             <div class="footer">
                 <div class="footer-column">
                     <h4>SOCIAL MEDIA</h4>
-                    <a href="#">📘 La plaza FB</a>
-                    <a href="#">📸 @laplazacanal</a>
-                    <a href="#">🐦 X Plaza</a>
+                    <a href="#">📘 Facebook</a>
+                    <a href="#">📸 Instagram</a>
                 </div>
                 <div class="footer-column center-logo">
                     <img src="LAPLAZA1.jpg" alt="Logo mini" class="mini-logo">
                     <p>El corazón de la Comunidad</p>
                 </div>
                 <div class="footer-column text-right">
-                    <h4>CONTACTO</h4>
+                    <h4>INFORMACIÓN</h4>
                     <p>📞 600 000 000</p>
-                    <p>✉️ info@laplaza.es</p>
-                    <p>🌐 laplaza.es</p>
+                    <p>✉️ hola@laplaza.es</p>
                 </div>
             </div>
 
@@ -438,23 +264,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
     <script>
         $(document).ready(function() {
-            // 1. Efecto de agua en el fondo
-            $('.hero-section').ripples({
-                resolution: 256,
-                dropRadius: 20,
-                perturbance: 0.04,
-                interactive: true
-            });
-
+            // Efecto agua
+            $('.hero-section').ripples({ resolution: 256, dropRadius: 20, perturbance: 0.04, interactive: true });
             setInterval(function() {
                 var $el = $('.hero-section');
                 var x = Math.random() * $el.outerWidth();
                 var y = Math.random() * $el.outerHeight();
                 $el.ripples('drop', x, y, 20, 0.04 + Math.random() * 0.04);
             }, 3000);
+
+            // Scroll suave para los enlaces del menú
+            $('nav a').on('click', function(e) {
+                e.preventDefault();
+                var target = $(this).attr('href');
+                var sidebar = $('.sidebar');
+                sidebar.animate({
+                    scrollTop: sidebar.scrollTop() + $(target).position().top - 100
+                }, 800); // 800 milisegundos de animación
+            });
         });
 
-        // 2. Efecto 3D en las tarjetas hexagonales
+        // Tarjetas 3D
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -468,7 +298,6 @@
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
                 card.style.transition = 'none';
             });
-
             card.addEventListener('mouseleave', () => {
                 card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
                 card.style.transition = 'transform 0.5s ease';
