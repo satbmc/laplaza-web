@@ -6,7 +6,7 @@
     <title>La Plaza - La Canal de Navarrés</title>
     <style>
         /* ========================================= */
-        /* ESTILOS BASE Y NAVEGACIÓN                 */
+        /* 1. ESTILOS BASE Y NAVEGACIÓN              */
         /* ========================================= */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap');
         
@@ -19,7 +19,7 @@
         .container { display: flex; height: 100vh; }
 
         /* ========================================= */
-        /* SECCIÓN IZQUIERDA (HERO & LOGO)           */
+        /* 2. SECCIÓN IZQUIERDA (HERO & LOGO)        */
         /* ========================================= */
         .hero-section { flex: 2; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; }
         .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle, rgba(11,25,44,0.4) 0%, #0b192c 100%); pointer-events: none; }
@@ -28,122 +28,60 @@
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* ========================================= */
-        /* SECCIÓN DERECHA (SCROLLING CONTENT)       */
+        /* 3. SECCIÓN DERECHA (BARRA LATERAL)        */
         /* ========================================= */
         .sidebar { flex: 1; background-color: #0b192c; padding: 100px 40px 40px; display: flex; flex-direction: column; gap: 60px; border-left: 1px solid rgba(255,255,255,0.1); z-index: 2; overflow-y: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .sidebar::-webkit-scrollbar { display: none; }
         .section-title { text-align: center; font-size: 18px; font-weight: 800; letter-spacing: 2px; margin-bottom: 25px; color: #fca311; text-transform: uppercase; }
 
         /* ========================================= */
-        /* MAPA 3D ISOMÉTRICO (NUEVO MOTOR CSS)      */
+        /* 4. VISITA VIRTUAL 360 (INCRUSTADA)        */
         /* ========================================= */
-        .map-3d-wrapper {
+        .tour-container {
             position: relative;
             width: 100%;
-            height: 400px;
-            background: radial-gradient(circle, #1a2a40 0%, #0b192c 100%);
+            height: 450px; /* Altura ideal para navegar el mapa */
             border-radius: 15px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px; /* Crea la profundidad 3D */
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            background-color: #000; /* Fondo negro mientras carga */
         }
 
-        /* El "suelo" del mapa que está inclinado */
-        .map-floor {
-            position: relative;
-            width: 350px;
-            height: 350px;
-            transform: rotateX(60deg) rotateZ(-45deg);
-            transform-style: preserve-3d;
+        .tour-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
-        /* Los hexágonos de la base */
-        .hex-tile {
-            position: absolute;
-            width: 70px;
-            height: 80px;
-            background-color: #2a4365;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            transform: translate(-50%, -50%); /* Centra el hexágono en su coordenada */
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            transition: all 0.3s;
-        }
-        
-        /* Variaciones de terreno para que parezca un mapa */
-        .hex-tile.water { background-color: #0f5286; }
-        .hex-tile.forest { background-color: #1a5135; }
-        .hex-tile.rock { background-color: #4a5568; }
-        .hex-tile.active { background-color: #fca311; opacity: 0.8; }
-
-        /* Las maquetas de los pueblos levantadas en 3D */
-        .village-item {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            /* Deshace la rotación del suelo para que miren de frente a la cámara */
-            transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-15px);
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: 10;
-        }
-
-        .village-item:hover {
-            transform: translate(-50%, -50%) rotateZ(45deg) rotateX(-60deg) translateY(-30px) scale(1.15);
-            z-index: 50;
-        }
-
-        /* El icono 3D del pueblo */
-        .village-img {
-            font-size: 40px; /* Usamos emojis/iconos como elementos 3D vectoriales */
-            filter: drop-shadow(0 15px 10px rgba(0,0,0,0.6));
-            margin-bottom: 2px;
-        }
-
-        /* El cartelito del nombre */
-        .village-label {
-            background: rgba(11, 25, 44, 0.9);
+        /* Botón opcional para ver a pantalla completa */
+        .fullscreen-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: transparent;
             color: #fca311;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 4px 10px;
-            border-radius: 20px;
             border: 1px solid #fca311;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
             text-transform: uppercase;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
             letter-spacing: 1px;
-            white-space: nowrap;
         }
 
-        /* El Tooltip con la foto real (aparece al hacer hover) */
-        .tooltip {
-            position: absolute;
-            bottom: 100%;
-            background-color: #ffffff;
+        .fullscreen-btn:hover {
+            background: #fca311;
             color: #0b192c;
-            padding: 8px;
-            border-radius: 10px;
-            width: 140px;
-            text-align: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            pointer-events: none;
-            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(252, 163, 17, 0.4);
         }
-        .tooltip::after { content: ''; position: absolute; top: 100%; left: 50%; margin-left: -8px; border-width: 8px; border-style: solid; border-color: #ffffff transparent transparent transparent; }
-        .tooltip img { width: 100%; height: 70px; object-fit: cover; border-radius: 6px; margin-bottom: 5px; }
-        .tooltip h4 { margin: 0; font-size: 15px; font-weight: 800; color: #0b192c; }
-        .tooltip p { margin: 2px 0 0 0; font-size: 11px; font-weight: 700; color: #fca311; }
-        .village-item:hover .tooltip { opacity: 1; visibility: visible; bottom: 120%; }
 
         /* ========================================= */
-        /* RUTAS, NOTICIAS Y RESTO DEL CÓDIGO        */
+        /* 5. RESTO DE SECCIONES                     */
         /* ========================================= */
         .cards-grid { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
         .card { background-color: #1a2a40; width: 140px; height: 160px; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; justify-content: center; align-items: flex-end; padding-bottom: 25px; font-size: 13px; font-weight: 800; text-align: center; cursor: pointer; transition: transform 0.4s ease, filter 0.3s; will-change: transform; background-size: cover; background-position: center; position: relative; }
@@ -195,8 +133,6 @@
             .hero-section { min-height: 70vh; padding-top: 80px; }
             .logo-container img { width: 220px; }
             .sidebar { padding: 40px 20px; border-left: none; border-top: 1px solid rgba(255,255,255,0.1); overflow-y: visible; }
-            /* En móvil hacemos el suelo 3D un poquito más pequeño para que quepa bien */
-            .map-floor { transform: scale(0.85) rotateX(60deg) rotateZ(-45deg); }
             .news-card { min-width: 180px; }
             .footer { flex-direction: column; text-align: center; gap: 30px; }
             .footer-column.text-right { text-align: center; }
@@ -227,85 +163,13 @@
             <div id="pueblos">
                 <div class="section-title">Descubre La Canal</div>
                 
-                <div class="map-3d-wrapper">
-                    <div class="map-floor">
-                        
-                        <div class="hex-tile" style="left: 35%; top: 25%;"></div>
-                        <div class="hex-tile water" style="left: 65%; top: 15%;"></div>
-                        <div class="hex-tile" style="left: 80%; top: 30%;"></div>
-                        <div class="hex-tile forest" style="left: 50%; top: 60%;"></div>
-                        <div class="hex-tile" style="left: 35%; top: 65%;"></div>
-                        <div class="hex-tile water" style="left: 65%; top: 75%;"></div>
-                        <div class="hex-tile rock" style="left: 20%; top: 40%;"></div>
-
-                        <div class="hex-tile active" style="left: 50%; top: 25%;"></div>
-                        <div class="village-item" style="left: 50%; top: 25%;">
-                            <div class="village-img">⛪</div>
-                            <span class="village-label">Navarrés</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Navarrés">
-                                <h4>Navarrés</h4>
-                                <p>La Plaza y el Corazón</p>
-                            </div>
-                        </div>
-
-                        <div class="hex-tile active" style="left: 65%; top: 40%;"></div>
-                        <div class="village-item" style="left: 65%; top: 40%;">
-                            <div class="village-img">🏰</div>
-                            <span class="village-label">Bolbaite</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1598135753163-6167c1a1ad65?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Bolbaite">
-                                <h4>Bolbaite</h4>
-                                <p>El Castillo y el Río</p>
-                            </div>
-                        </div>
-
-                        <div class="hex-tile active" style="left: 80%; top: 55%;"></div>
-                        <div class="village-item" style="left: 80%; top: 55%;">
-                            <div class="village-img">🏘️</div>
-                            <span class="village-label">Chella</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1544198365-f5d60b6d8190?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Chella">
-                                <h4>Chella</h4>
-                                <p>El Salto Escondido</p>
-                            </div>
-                        </div>
-
-                        <div class="hex-tile active water" style="left: 95%; top: 70%;"></div>
-                        <div class="village-item" style="left: 95%; top: 70%;">
-                            <div class="village-img">⛲</div>
-                            <span class="village-label">Anna</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Anna">
-                                <h4>Anna</h4>
-                                <p>El Palacio del Agua</p>
-                            </div>
-                        </div>
-
-                        <div class="hex-tile active forest" style="left: 35%; top: 45%;"></div>
-                        <div class="village-item" style="left: 35%; top: 45%;">
-                            <div class="village-img">🏕️</div>
-                            <span class="village-label">Quesa</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1516483638261-f40af5bea098?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Quesa">
-                                <h4>Quesa</h4>
-                                <p>Los Charcos Turquesas</p>
-                            </div>
-                        </div>
-
-                        <div class="hex-tile active rock" style="left: 20%; top: 60%;"></div>
-                        <div class="village-item" style="left: 20%; top: 60%;">
-                            <div class="village-img">⛰️</div>
-                            <span class="village-label">Bicorp</span>
-                            <div class="tooltip">
-                                <img src="https://images.unsplash.com/photo-1581451000806-056bd2e698bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Bicorp">
-                                <h4>Bicorp</h4>
-                                <p>Reserva y Arte Rupestre</p>
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="tour-container">
+                    <iframe src="https://ver.visitamultimedia.com/canal/" allowfullscreen loading="lazy"></iframe>
                 </div>
+                
+                <a href="https://ver.visitamultimedia.com/canal/" target="_blank" class="fullscreen-btn">
+                    Abrir mapa a pantalla completa
+                </a>
             </div>
 
             <div id="rutas">
@@ -327,7 +191,7 @@
                 <div class="section-title">Últimas Noticias</div>
                 <div class="news-carousel">
                     <div class="news-card">
-                        <img src="https://images.unsplash.com/photo-1533174000282-530c1e549117?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fiestas regionales">
+                        <img src="https://images.unsplash.com/photo-1533174000282-530c1e549117?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fiestas">
                         <div class="news-content">
                             <span class="date">ESTE FIN DE SEMANA</span>
                             <h4>Fiestas Navarrés</h4>
@@ -335,7 +199,7 @@
                         </div>
                     </div>
                     <div class="news-card">
-                        <img src="https://images.unsplash.com/photo-1501554728187-ce583c9bf28e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cascadas regional">
+                        <img src="https://images.unsplash.com/photo-1501554728187-ce583c9bf28e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cascadas">
                         <div class="news-content">
                             <span class="date">ACTUALIDAD</span>
                             <h4>Ruta Cascadas Anna</h4>
@@ -350,19 +214,19 @@
                 <p style="text-align: center; font-size: 13px; color: #b0b8c4; margin-top: -15px; margin-bottom: 20px;">#LaPlazaCanal</p>
                 <div class="gallery-grid">
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1516483638261-f40af5bea098?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Naturaleza 1">
+                        <img src="https://images.unsplash.com/photo-1516483638261-f40af5bea098?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 1">
                         <div class="gallery-overlay">❤️</div>
                     </div>
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Agua cascada 2">
+                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 2">
                         <div class="gallery-overlay">❤️</div>
                     </div>
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Agua pool 3">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 3">
                         <div class="gallery-overlay">❤️</div>
                     </div>
                     <div class="gallery-item">
-                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cascada real 4">
+                        <img src="https://images.unsplash.com/photo-1433086966358-54859d0ed716?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Comunidad 4">
                         <div class="gallery-overlay">❤️</div>
                     </div>
                 </div>
@@ -402,9 +266,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.ripples/0.5.3/jquery.ripples.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Efecto agua real e interactivo
+            // Efecto agua interactivo
             $('.hero-section').ripples({ resolution: 256, dropRadius: 20, perturbance: 0.04, interactive: true });
-            
             setInterval(function() {
                 var $el = $('.hero-section');
                 var x = Math.random() * $el.outerWidth();
@@ -412,7 +275,7 @@
                 $el.ripples('drop', x, y, 20, 0.04 + Math.random() * 0.04);
             }, 3000);
 
-            // Scroll suave para los enlaces del menú
+            // Scroll suave
             $('nav a').on('click', function(e) {
                 e.preventDefault();
                 var target = $(this).attr('href');
@@ -423,7 +286,7 @@
             });
         });
 
-        // Efecto 3D en hexágonos de rutas
+        // Efecto 3D en hexágonos
         const cards = document.querySelectorAll('.card');
         cards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
