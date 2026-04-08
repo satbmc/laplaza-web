@@ -25,10 +25,7 @@
         .hero-section { flex: 2; position: relative; display: flex; flex-direction: column; justify-content: center; align-items: center; background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover; }
         .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle, rgba(11,25,44,0.4) 0%, #0b192c 100%); pointer-events: none; }
         .logo-container { position: relative; z-index: 2; text-align: center; animation: float 4s ease-in-out infinite; }
-        
-        /* Tu logotipo con bordes redondeados y sombra */
         .logo-container img { width: 350px; border-radius: 50%; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
-        
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
 
         /* ========================================= */
@@ -139,7 +136,7 @@
         <div class="hero-section">
             <div class="overlay"></div>
             <div class="logo-container">
-                <img src="LAPLAZA1.jpg" alt="Logo La Plaza">
+                <img src="LAPLAZA1.png" alt="Logo La Plaza">
             </div>
         </div>
 
@@ -252,7 +249,7 @@
                     <a href="#">📸 Instagram</a>
                 </div>
                 <div class="footer-column center-logo">
-                    <img src="LAPLAZA1.jpg" alt="Logo mini" class="mini-logo">
+                    <img src="LAPLAZA1.png" alt="Logo mini" class="mini-logo">
                     <p>El corazón de la Comunidad</p>
                 </div>
                 <div class="footer-column text-right">
@@ -301,3 +298,13 @@
                 const rotateX = ((y - centerY) / centerY) * -10;
                 const rotateY = ((x - centerX) / centerX) * 10;
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                card.style.transition = 'none';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+                card.style.transition = 'transform 0.5s ease';
+            });
+        });
+    </script>
+</body>
+</html>
